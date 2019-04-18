@@ -5,20 +5,20 @@ from django.contrib.auth.models import BaseUserManager
 
 class UserProfileManager(BaseUserManager):
 
-    def create_user(self, email, voiceit_id):
+    def create_user(self, email, voiceit_id, password):
         if not email:
             raise ValueError('Email is required')
         if not voiceit_id:
             raise ValueError('Sorry, Error with your voiceprint')
         email = self.normalize_email(email)
         user = self.model(email = email, voiceit_id = voiceit_id)
-        user.set_password(email)
+        user.set_password(password)
 
         user.save(using = self._db)
         return user
     
     def create_superuser(self, email, password, voiceit_id):
-        user = self.create_user(email, voiceit_id)
+        user = self.create_user(email, voiceit_id, password)
 
         user.is_superuser = True
         user.is_staff = True
